@@ -1,0 +1,41 @@
+{
+  "description": "Noise parameter configurations for thermal imagery experiments",
+  "random_seed": 42,
+  "noise_types": {
+    "gaussian": {
+      "description": "Additive Gaussian (read) noise",
+      "parameter_name": "sigma",
+      "parameter_unit": "intensity (0-255 scale)",
+      "test_values": [5, 10, 15, 20],
+      "folder_naming": "gaussian_sigma{value}"
+    },
+    "poisson": {
+      "description": "Poisson (shot) noise - signal dependent",
+      "parameter_name": "lambda",
+      "parameter_unit": "scaling factor",
+      "test_values": [1],
+      "folder_naming": "poisson_lambda{value}",
+      "notes": "Variance equals mean - no tunable parameter needed"
+    },
+    "saltpepper": {
+      "description": "Salt-and-pepper noise (dead/hot pixels)",
+      "parameter_name": "density",
+      "parameter_unit": "proportion (0-1)",
+      "test_values": [0.01, 0.05, 0.1],
+      "folder_naming": "saltpepper_d{value_formatted}",
+      "value_format": "03d for 0.01->001, 0.05->005, 0.1->010"
+    },
+    "speckle": {
+      "description": "Speckle (multiplicative) noise",
+      "parameter_name": "variance",
+      "parameter_unit": "variance",
+      "test_values": [0.01, 0.05, 0.1],
+      "folder_naming": "speckle_var{value_formatted}",
+      "value_format": "03d for 0.01->001, 0.05->005, 0.1->010"
+    }
+  },
+  "data_paths": {
+    "source": "~/data/noise/thermal/original",
+    "destination_base": "~/data/noise/thermal/noisy"
+  }
+}

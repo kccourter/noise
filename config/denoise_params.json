@@ -1,0 +1,109 @@
+{
+  "description": "Denoising algorithm parameter configurations",
+  "algorithms": {
+    "median": {
+      "description": "Median filter - simple non-linear filter",
+      "library": "opencv",
+      "function": "medianBlur",
+      "parameters": {
+        "kernel_size": {
+          "description": "Size of median filter kernel (must be odd)",
+          "test_values": [3, 5, 7],
+          "default": 5
+        }
+      },
+      "folder_naming": "median_k{kernel_size}"
+    },
+    "bilateral": {
+      "description": "Bilateral filter - edge-preserving smoothing",
+      "library": "opencv",
+      "function": "bilateralFilter",
+      "parameters": {
+        "d": {
+          "description": "Diameter of pixel neighborhood",
+          "test_values": [5, 9, 15],
+          "default": 9
+        },
+        "sigmaColor": {
+          "description": "Filter sigma in color space",
+          "test_values": [75, 100, 150],
+          "default": 75
+        },
+        "sigmaSpace": {
+          "description": "Filter sigma in coordinate space",
+          "test_values": [75, 100, 150],
+          "default": 75
+        }
+      },
+      "folder_naming": "bilateral_d{d}_sc{sigmaColor}_ss{sigmaSpace}"
+    },
+    "nlm": {
+      "description": "Non-Local Means denoising",
+      "library": "opencv",
+      "function": "fastNlMeansDenoising",
+      "parameters": {
+        "h": {
+          "description": "Filter strength (higher = more denoising)",
+          "test_values": [5, 10, 15],
+          "default": 10
+        },
+        "templateWindowSize": {
+          "description": "Size of template patch (must be odd)",
+          "test_values": [7, 9],
+          "default": 7
+        },
+        "searchWindowSize": {
+          "description": "Size of search area (must be odd)",
+          "test_values": [21, 31],
+          "default": 21
+        }
+      },
+      "folder_naming": "nlm_h{h}_ps{templateWindowSize}_pd{searchWindowSize}"
+    },
+    "wavelet": {
+      "description": "Wavelet-based denoising",
+      "library": "ptwt",
+      "function": "wavedec2/waverec2 with thresholding",
+      "parameters": {
+        "wavelet": {
+          "description": "Wavelet family",
+          "test_values": ["db4", "haar", "sym8"],
+          "default": "db4"
+        },
+        "level": {
+          "description": "Decomposition level",
+          "test_values": [2, 3, 4],
+          "default": 3
+        },
+        "threshold_method": {
+          "description": "Thresholding method",
+          "test_values": ["soft", "hard"],
+          "default": "soft"
+        }
+      },
+      "folder_naming": "wavelet_{wavelet}_l{level}_{threshold_method}"
+    },
+    "bm3d": {
+      "description": "BM3D - state-of-the-art denoising",
+      "library": "bm3d",
+      "function": "bm3d_denoising",
+      "parameters": {
+        "sigma_psd": {
+          "description": "Noise standard deviation (should match input noise level)",
+          "test_values": [5, 10, 15, 20],
+          "default": 10
+        }
+      },
+      "folder_naming": "bm3d_sigma{sigma_psd}"
+    }
+  },
+  "data_paths": {
+    "source_base": "~/data/noise/thermal/noisy",
+    "destination_base": "~/data/noise/thermal/denoised"
+  },
+  "notes": [
+    "Each denoised folder structure: denoised/{noise_type}/{algorithm_variant}/",
+    "Example: denoised/gaussian_sigma10/median_k5/",
+    "Test multiple parameter combinations for each algorithm"
+  ]
+}
