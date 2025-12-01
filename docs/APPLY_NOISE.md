@@ -36,8 +36,74 @@ Added functions to `src/noise_logger.py`:
 
 Test with: `python3 scripts/test_active_params.py`
 Documentation: `docs/ACTIVE_PARAMS_USAGE.md`
-- [ ] Implement a Python noise application script that takes an input image argument and applies either a specified noise model or the full suite if none is specified, using the parameter input file
-- [ ] Generate noisy versions of dataset with multiple noise types/levels/parameters as enumerated in NOISE_STUDY.md
+- [x] Implement a Python noise application script that takes an input image argument and applies either a specified noise model or the full suite if none is specified, using the parameter input file
+
+**Implementation**: Created `scripts/apply_noise.py` that:
+- Reads parameters from `config/active_noise_params.json`
+- Takes input image file or directory
+- Applies specified noise type or all enabled types
+- Automatically creates output folders with standardized naming
+- Saves metadata for each noise application
+- Updates central log file
+
+Usage:
+```bash
+# Apply all enabled noise types
+python3 scripts/apply_noise.py image.jpg
+
+# Apply specific noise type
+python3 scripts/apply_noise.py image.jpg --noise gaussian
+
+# Process directory
+python3 scripts/apply_noise.py ~/data/noise/thermal/original
+
+# Use custom config
+python3 scripts/apply_noise.py image.jpg --config my_params.json
+```
+
+Output structure:
+```
+~/data/noise/thermal/noisy/
+  ├── gaussian_sigma10/
+  ├── poisson_lambda1/
+  ├── saltpepper_d001/
+  └── speckle_var001/
+```
+- [x] Generate noisy versions of dataset with multiple noise types/levels/parameters as enumerated in NOISE_STUDY.md
+
+**Implementation**: Created `scripts/generate_noise_suite.py` that generates all noise variations from NOISE_STUDY.md:
+
+**Gaussian Noise** (σ values):
+- gaussian_sigma5
+- gaussian_sigma10
+- gaussian_sigma15
+- gaussian_sigma20
+
+**Poisson Noise**:
+- poisson_lambda1
+
+**Salt-and-Pepper Noise** (densities):
+- saltpepper_d001 (0.01)
+- saltpepper_d005 (0.05)
+- saltpepper_d010 (0.10)
+
+**Speckle Noise** (variance):
+- speckle_var001 (0.01)
+- speckle_var005 (0.05)
+- speckle_var010 (0.10)
+
+**Total**: 11 noise variations generated
+
+Usage:
+```bash
+python3 scripts/generate_noise_suite.py
+```
+
+Each variation includes:
+- Noisy image(s)
+- noise_metadata.json with parameters
+- Entry in central log file
+- Reproducible with seed=42
 
 
 ## Metrics Measurement on Noisy Data
