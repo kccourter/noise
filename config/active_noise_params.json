@@ -1,0 +1,33 @@
+{
+  "description": "Active noise parameters - edit this file to configure noise application",
+  "random_seed": 42,
+  "data_paths": {
+    "source": "~/data/noise/thermal/original",
+    "destination_base": "~/data/noise/thermal/noisy"
+  },
+  "current_params": {
+    "gaussian": {
+      "enabled": true,
+      "sigma": 10
+    },
+    "poisson": {
+      "enabled": true
+    },
+    "saltpepper": {
+      "enabled": true,
+      "density": 0.01
+    },
+    "speckle": {
+      "enabled": true,
+      "variance": 0.01
+    }
+  },
+  "notes": [
+    "Edit 'current_params' to configure which noise types to apply and their parameters",
+    "Set 'enabled: false' to skip a noise type",
+    "Gaussian sigma: 0-255 scale (try 5, 10, 15, 20)",
+    "Salt-pepper density: 0-1 (try 0.01, 0.05, 0.1)",
+    "Speckle variance: 0-1 (try 0.01, 0.05, 0.1)",
+    "Change random_seed for different noise realizations"
+  ]
+}

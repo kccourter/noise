@@ -11,6 +11,10 @@ from PIL import Image
 from skimage.util import random_noise
 import sys
 
+# Add src to path
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
+from noise_logger import log_noise_parameters, append_to_noise_log
+
 
 def set_seed(seed=42):
     """Set random seeds for reproducibility."""
@@ -22,28 +26,28 @@ def add_gaussian_noise(image, sigma=10, seed=42):
     set_seed(seed)
     # Convert sigma from 0-255 scale to 0-1 scale for skimage
     var = (sigma / 255.0) ** 2
-    noisy = random_noise(image, mode='gaussian', var=var, seed=seed)
+    noisy = random_noise(image, mode='gaussian', var=var)
     return noisy
 
 
 def add_poisson_noise(image, seed=42):
     """Add Poisson (shot) noise."""
     set_seed(seed)
-    noisy = random_noise(image, mode='poisson', seed=seed)
+    noisy = random_noise(image, mode='poisson')
     return noisy
 
 
 def add_salt_pepper_noise(image, density=0.01, seed=42):
     """Add salt-and-pepper noise."""
     set_seed(seed)
-    noisy = random_noise(image, mode='s&p', amount=density, seed=seed)
+    noisy = random_noise(image, mode='s&p', amount=density)
     return noisy
 
 
 def add_speckle_noise(image, variance=0.01, seed=42):
     """Add speckle (multiplicative) noise."""
     set_seed(seed)
-    noisy = random_noise(image, mode='speckle', var=variance, seed=seed)
+    noisy = random_noise(image, mode='speckle', var=variance)
     return noisy
 
 
@@ -124,20 +128,8 @@ def main():
 
     print(f"Random seed: {args.seed}")
 
-    # Save metadata
-    metadata = {
-        'noise_type': args.noise_type,
-        'parameters': params,
-        'num_images': len(image_files),
-        'source_directory': str(src_dir),
-        'destination_directory': str(dst_dir)
-    }
-
-    metadata_path = dst_dir / 'noise_metadata.json'
+    # Create destination folder
     dst_dir.mkdir(parents=True, exist_ok=True)
-    with open(metadata_path, 'w') as f:
-        json.dump(metadata, indent=2, fp=f)
-    print(f"Metadata saved to {metadata_path}")
 
     # Process images
     for src_path in image_files:
@@ -147,6 +139,22 @@ def main():
 
     print(f"\nCompleted! Processed {len(image_files)} images")
     print(f"Output directory: {dst_dir}")
+
+    # Save metadata using noise_logger
+    metadata_path = dst_dir / 'noise_metadata.json'
+    additional_info = {
+        'num_images': len(image_files),
+        'source_directory': str(src_dir),
+        'destination_directory': str(dst_dir),
+        'source_files': [f.name for f in image_files]
+    }
+    log_noise_parameters(metadata_path, args.noise_type, params, args.seed, additional_info)
+    print(f"Metadata saved to {metadata_path}")
+
+    # Append to central noise log
+    central_log = Path.home() / 'data' / 'noise' / 'metadata' / 'noise_params.json'
+    append_to_noise_log(central_log, args.noise_type, params, args.seed, image_files, dst_dir)
+    print(f"Entry added to central log: {central_log}")
 
 
 if __name__ == "__main__":
