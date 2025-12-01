@@ -5,16 +5,12 @@ Apply well-characterized noise of several statistical types to the downloaded th
 
 ### Tasks
 
-- [ ] Identify Python packages for noise generation (NumPy, scikit-image)
-- [ ] Implement noise application functions for each noise type
-- [ ] Define random seed management strategy for reproducibility
 - [ ] Create parameter logging system to track noise configurations:
   - Noise type
   - Parameters (σ, λ, density, etc.)
   - Random seed
   - Timestamp
 - [ ] Generate noisy versions of dataset with multiple noise types/levels
-- [ ] Create systematic naming convention for noisy variants
 
 ## Metrics Measurement on Noisy Data
 

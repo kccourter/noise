@@ -58,7 +58,7 @@ ${DATA_FOLDER}/noise/}$
     └── metadata/
         ├── noise_params.json          # Tracks noise parameters and seeds
         ├── denoise_params.json        # Tracks denoising parameters
-        └── dataset_info.json          # Roboflow dataset metadata
+        └── dataset_info.json          # Dataset metadata
 ```
 
 ## Python Packages and Tools
@@ -97,17 +97,12 @@ ${DATA_FOLDER}/noise/}$
 - matplotlib - Plotting and visualization
 - seaborn - Statistical visualizations (optional)
 
-### Tasks
-
-- [ ] Create requirements.txt with all dependencies
-- [ ] Document any format conversion needs for thermal imagery
-- [ ] Test compatibility with different bit depths (8-bit, 16-bit)
-- [ ] Create utility functions for format conversion if needed
 
 ## Reproducibility
 
 ### Tasks
 
+- [ ] uv add all dependencies 
 - [ ] Fix random seeds for all stochastic processes (NumPy, Python random)
 - [ ] Log Python version and library versions in metadata
 - [ ] Create requirements.txt or environment.yml
