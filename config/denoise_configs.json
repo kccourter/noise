@@ -1,0 +1,80 @@
+{
+  "description": "Denoising algorithm configurations with parameter variations",
+  "algorithms": {
+    "median": {
+      "priority": 1,
+      "enabled": true,
+      "best_for": ["saltpepper", "impulse"],
+      "parameter_variations": [
+        {"name": "k3", "ksize": 3},
+        {"name": "k5", "ksize": 5},
+        {"name": "k7", "ksize": 7}
+      ]
+    },
+    "bilateral": {
+      "priority": 1,
+      "enabled": true,
+      "best_for": ["gaussian"],
+      "parameter_variations": [
+        {"name": "d9_sc75_ss75", "d": 9, "sigma_color": 75, "sigma_space": 75},
+        {"name": "d9_sc100_ss100", "d": 9, "sigma_color": 100, "sigma_space": 100},
+        {"name": "d15_sc75_ss75", "d": 15, "sigma_color": 75, "sigma_space": 75}
+      ]
+    },
+    "nlm": {
+      "priority": 1,
+      "enabled": true,
+      "best_for": ["gaussian", "poisson"],
+      "parameter_variations": [
+        {"name": "h10_t7_s21", "h": 10, "template_window_size": 7, "search_window_size": 21},
+        {"name": "h15_t7_s21", "h": 15, "template_window_size": 7, "search_window_size": 21},
+        {"name": "h10_t9_s31", "h": 10, "template_window_size": 9, "search_window_size": 31}
+      ]
+    },
+    "bm3d": {
+      "priority": 1,
+      "enabled": true,
+      "best_for": ["gaussian", "poisson", "speckle"],
+      "note": "sigma_psd should match noise level (sigma/255)",
+      "parameter_variations": [
+        {"name": "sigma5", "sigma_psd": 0.0196, "stage": "all", "profile": "np"},
+        {"name": "sigma10", "sigma_psd": 0.0392, "stage": "all", "profile": "np"},
+        {"name": "sigma15", "sigma_psd": 0.0588, "stage": "all", "profile": "np"},
+        {"name": "sigma20", "sigma_psd": 0.0784, "stage": "all", "profile": "np"}
+      ]
+    },
+    "wavelet": {
+      "priority": 2,
+      "enabled": true,
+      "best_for": ["gaussian", "mixed"],
+      "parameter_variations": [
+        {"name": "db4_soft", "wavelet": "db4", "mode": "soft", "sigma": null},
+        {"name": "haar_soft", "wavelet": "haar", "mode": "soft", "sigma": null},
+        {"name": "sym8_soft", "wavelet": "sym8", "mode": "soft", "sigma": null}
+      ]
+    },
+    "tv": {
+      "priority": 2,
+      "enabled": true,
+      "best_for": ["gaussian", "piecewise_constant"],
+      "parameter_variations": [
+        {"name": "w01", "weight": 0.1, "max_num_iter": 200},
+        {"name": "w02", "weight": 0.2, "max_num_iter": 200},
+        {"name": "w03", "weight": 0.3, "max_num_iter": 200}
+      ]
+    }
+  },
+  "noise_to_algorithm_mapping": {
+    "gaussian_sigma5": ["bm3d:sigma5", "bilateral:d9_sc75_ss75", "nlm:h10_t7_s21", "wavelet:db4_soft", "tv:w01"],
+    "gaussian_sigma10": ["bm3d:sigma10", "bilateral:d9_sc75_ss75", "nlm:h10_t7_s21", "wavelet:db4_soft", "tv:w01"],
+    "gaussian_sigma15": ["bm3d:sigma15", "bilateral:d9_sc100_ss100", "nlm:h15_t7_s21", "wavelet:db4_soft", "tv:w02"],
+    "gaussian_sigma20": ["bm3d:sigma20", "bilateral:d15_sc75_ss75", "nlm:h15_t7_s21", "wavelet:db4_soft", "tv:w02"],
+    "poisson_lambda1": ["bm3d:sigma10", "nlm:h10_t7_s21", "wavelet:db4_soft"],
+    "saltpepper_d001": ["median:k3", "bilateral:d9_sc75_ss75", "nlm:h10_t7_s21"],
+    "saltpepper_d005": ["median:k5", "bilateral:d9_sc100_ss100", "nlm:h10_t9_s31"],
+    "saltpepper_d010": ["median:k7", "bilateral:d15_sc75_ss75", "nlm:h15_t7_s21"],
+    "speckle_var001": ["bm3d:sigma10", "wavelet:db4_soft", "tv:w01"],
+    "speckle_var005": ["bm3d:sigma15", "wavelet:db4_soft", "tv:w02"],
+    "speckle_var010": ["bm3d:sigma20", "wavelet:sym8_soft", "tv:w03"]
+  }
+}
