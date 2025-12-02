@@ -114,69 +114,74 @@ Compare denoised results against original images using:
 
 ## Project Structure
 
+**Data Organization:**
 ```
-data/noise/
-â"œâ"€â"€ thermal/
-â"‚   â"œâ"€â"€ original/              # Downloaded FLIR thermal images
-â"‚   â"œâ"€â"€ noisy/                 # Noise-corrupted images (11 variations)
-â"‚   â"‚   â"œâ"€â"€ gaussian_sigma5/
-â"‚   â"‚   â"œâ"€â"€ gaussian_sigma10/
-â"‚   â"‚   â"œâ"€â"€ gaussian_sigma15/
-â"‚   â"‚   â"œâ"€â"€ gaussian_sigma20/
-â"‚   â"‚   â"œâ"€â"€ poisson_lambda1/
-â"‚   â"‚   â"œâ"€â"€ saltpepper_d001/
-â"‚   â"‚   â"œâ"€â"€ saltpepper_d005/
-â"‚   â"‚   â"œâ"€â"€ saltpepper_d010/
-â"‚   â"‚   â"œâ"€â"€ speckle_var001/
-â"‚   â"‚   â"œâ"€â"€ speckle_var005/
-â"‚   â"‚   â""â"€â"€ speckle_var010/
-â"‚   â""â"€â"€ denoised/              # Algorithm outputs
-â"‚       â"œâ"€â"€ gaussian_sigma10/
-â"‚       â"‚   â"œâ"€â"€ bm3d_sigma10/
-â"‚       â"‚   â"œâ"€â"€ bilateral_d9_sc75_ss75/
-â"‚       â"‚   â"œâ"€â"€ nlm_h10_t7_s21/
-â"‚       â"‚   â"œâ"€â"€ wavelet_db4_soft/
-â"‚       â"‚   â""â"€â"€ tv_w02/
-â"‚       â""â"€â"€ [other noise types]/
-â"œâ"€â"€ metrics/
-â"‚   â"œâ"€â"€ baseline_metrics.json      # Original image metrics
-â"‚   â"œâ"€â"€ noisy_metrics.json         # Noise-degraded metrics
-â"‚   â""â"€â"€ denoised_metrics.json      # Denoised results metrics
-â""â"€â"€ metadata/
-    â"œâ"€â"€ noise_params.json          # Complete noise parameter log
-    â"œâ"€â"€ denoise_params.json        # Complete denoising parameter log
-    â""â"€â"€ baseline_metrics_summary.md
+data/noise/thermal/
+  original/              # Downloaded FLIR thermal images
+  noisy/                 # Noise-corrupted images (11 variations)
+    gaussian_sigma5/
+    gaussian_sigma10/
+    gaussian_sigma15/
+    gaussian_sigma20/
+    poisson_lambda1/
+    saltpepper_d001/
+    saltpepper_d005/
+    saltpepper_d010/
+    speckle_var001/
+    speckle_var005/
+    speckle_var010/
+  denoised/              # Algorithm outputs
+    gaussian_sigma10/
+      bm3d_sigma10/
+      bilateral_d9_sc75_ss75/
+      nlm_h10_t7_s21/
+      wavelet_db4_soft/
+      tv_w02/
+    [other noise types]/
 
+data/noise/metrics/
+  baseline_metrics.json      # Original image metrics
+  noisy_metrics.json         # Noise-degraded metrics
+  denoised_metrics.json      # Denoised results metrics
+
+data/noise/metadata/
+  noise_params.json          # Complete noise parameter log
+  denoise_params.json        # Complete denoising parameter log
+  baseline_metrics_summary.md
+```
+
+**Project Files:**
+```
 config/
-â"œâ"€â"€ active_noise_params.json    # Editable noise configuration
-â""â"€â"€ denoise_configs.json        # Algorithm parameters and mappings
+  active_noise_params.json    # Editable noise configuration
+  denoise_configs.json        # Algorithm parameters and mappings
 
 src/
-â"œâ"€â"€ noise_logger.py             # Parameter logging utilities
-â"œâ"€â"€ denoise.py                  # Denoising algorithm implementations
-â""â"€â"€ metrics.py                  # Quality metrics computation
+  noise_logger.py             # Parameter logging utilities
+  denoise.py                  # Denoising algorithm implementations
+  metrics.py                  # Quality metrics computation
 
 scripts/
-â"œâ"€â"€ apply_noise.py              # Apply noise to images
-â"œâ"€â"€ generate_noise_suite.py     # Generate all 11 noise variations
-â"œâ"€â"€ apply_denoise.py            # Apply denoising algorithms
-â"œâ"€â"€ test_denoise.py             # Test all denoising algorithms
-â"œâ"€â"€ test_active_params.py       # View current noise configuration
-â""â"€â"€ measure_metrics.py          # Compute quality metrics
+  apply_noise.py              # Apply noise to images
+  generate_noise_suite.py     # Generate all 11 noise variations
+  apply_denoise.py            # Apply denoising algorithms
+  test_denoise.py             # Test all denoising algorithms
+  test_active_params.py       # View current noise configuration
+  measure_metrics.py          # Compute quality metrics
 
 docs/
-â"œâ"€â"€ NOISE_STUDY.md              # Noise types and organization
-â"œâ"€â"€ APPLY_NOISE.md              # Noise application workflow
-â"œâ"€â"€ ACTIVE_PARAMS_USAGE.md      # Configuration guide
-â"œâ"€â"€ BASELINE_METRICS.md         # Baseline characterization
-â"œâ"€â"€ DENOISE.md                  # Denoising workflow
-â"œâ"€â"€ DENOISE_ALGORITHMS_RESEARCH.md  # Algorithm analysis
-â""â"€â"€ DENOISE_IMPLEMENTATION_SUMMARY.md # Implementation details
+  NOISE_STUDY.md              # Noise types and organization
+  APPLY_NOISE.md              # Noise application workflow
+  ACTIVE_PARAMS_USAGE.md      # Configuration guide
+  BASELINE_METRICS.md         # Baseline characterization
+  DENOISE.md                  # Denoising workflow
+  DENOISE_ALGORITHMS_RESEARCH.md  # Algorithm analysis
+  DENOISE_IMPLEMENTATION_SUMMARY.md # Implementation details
 ```
 
 ## Current Status
 
-### âœ" Completed
+### Completed
 
 **Infrastructure**
 - Noise parameter logging system with JSON metadata
@@ -203,7 +208,7 @@ docs/
 - Organized output structure by noise type and algorithm
 - Parameter variation support for optimization studies
 
-### â³ In Progress
+### In Progress
 
 **Metrics Measurement**
 - Apply metrics to all noise-corrupted variants
