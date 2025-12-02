@@ -1,0 +1,66 @@
+{
+  "description": "Metrics configuration for noise removal evaluation",
+  "metrics": {
+    "psnr": {
+      "name": "Peak Signal-to-Noise Ratio",
+      "library": "scikit-image",
+      "function": "peak_signal_noise_ratio",
+      "unit": "dB",
+      "higher_is_better": true,
+      "description": "Measures signal quality; higher values indicate less degradation"
+    },
+    "ssim": {
+      "name": "Structural Similarity Index",
+      "library": "scikit-image",
+      "function": "structural_similarity",
+      "unit": "dimensionless (0-1)",
+      "higher_is_better": true,
+      "description": "Perceptual metric; closer to 1 indicates better structural preservation"
+    },
+    "mse": {
+      "name": "Mean Squared Error",
+      "library": "scikit-image",
+      "function": "mean_squared_error",
+      "unit": "squared intensity",
+      "higher_is_better": false,
+      "description": "Average squared difference; lower values indicate better match"
+    },
+    "mae": {
+      "name": "Mean Absolute Error",
+      "library": "numpy",
+      "function": "mean(abs(reference - test))",
+      "unit": "intensity",
+      "higher_is_better": false,
+      "description": "Average absolute difference; lower values indicate better match"
+    }
+  },
+  "comparison_groups": {
+    "baseline": {
+      "description": "Original images self-comparison (should be perfect)",
+      "reference": "original",
+      "test": "original",
+      "output_file": "baseline_metrics.json"
+    },
+    "noisy": {
+      "description": "Original vs noisy images",
+      "reference": "original",
+      "test": "noisy",
+      "output_file": "noisy_metrics.json"
+    },
+    "denoised": {
+      "description": "Original vs denoised images",
+      "reference": "original",
+      "test": "denoised",
+      "output_file": "denoised_metrics.json"
+    }
+  },
+  "output_paths": {
+    "metrics_base": "~/data/noise/metrics"
+  },
+  "notes": [
+    "Baseline metrics verify implementation correctness (should be perfect)",
+    "Noisy metrics quantify degradation from each noise type",
+    "Denoised metrics evaluate algorithm performance",
+    "Compare denoised vs noisy to measure improvement"
+  ]
+}
